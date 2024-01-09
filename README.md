@@ -23,7 +23,7 @@ To get started with EduPanel, follow these steps:
 
 1. Clone the Repository:
 
-	- `git clone https://github.com/your-username/EduPanel.git`<br>
+	- `git clone https://github.com/GihanYashoda/edu-panel.git`<br>
 `cd EduPanel`
 
 2. Backend Setup:
