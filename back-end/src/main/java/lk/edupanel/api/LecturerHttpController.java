@@ -77,7 +77,22 @@ public class LecturerHttpController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{lecturer-id}")
-    public void deleteLecturer(@PathVariable("lecturer-id") Integer lecturerId){}
+    public void deleteLecturer(@PathVariable("lecturer-id") Integer lecturerId){
+        Lecturer lecturer = em.find(Lecturer.class, lecturerId);
+        if (lecturer == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        em.getTransaction().begin();
+        try {
+            em.remove(lecturer);
+
+            if (lecturer.getPicture() != null){
+                bucket.get(lecturer.getPicture().getPicturePath()).delete();
+            }
+            em.getTransaction().commit();
+        }catch (Throwable t){
+            em.getTransaction().rollback();
+            throw new RuntimeException();
+        }
+    }
 
     @GetMapping(produces = "application/json")
     public List<LecturerTO> getAllLecturers(){
